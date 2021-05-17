@@ -1,0 +1,106 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "saurav_mtv.ipynb",
+      "provenance": [],
+      "collapsed_sections": []
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ijtp3ZJXqIwR",
+        "outputId": "889011d3-6bb4-467d-b332-94fd6056dab0"
+      },
+      "source": [
+        "from keras.datasets import mnist\n",
+        "data = mnist.load_data()\n",
+        "((x_train,y_train),(x_test,y_test)) = data\n",
+        " \n",
+        "x_train = x_train.reshape((x_train.shape[0], 28*28)).astype('float32')\n",
+        "x_test = x_test.reshape((x_test.shape[0], 28*28)).astype('float32')\n",
+        "x_train = x_train / 255\n",
+        "x_test = x_test / 255\n",
+        " \n",
+        "from keras.utils import np_utils\n",
+        "y_train = np_utils.to_categorical(y_train)\n",
+        "y_test = np_utils.to_categorical(y_test)\n",
+        "classes = y_test.shape[1]\n",
+        " \n",
+        " \n",
+        "from keras.models import Sequential\n",
+        "from keras.layers import Dense\n",
+        "model = Sequential()\n",
+        "model.add(Dense(32, input_dim = 28*28 , activation = 'relu'))\n",
+        "model.add(Dense(64, activation = 'relu'))\n",
+        "model.add(Dense(10, activation = 'softmax'))\n",
+        " \n",
+        "model.compile(loss='categorical_crossentropy' , optimizer = 'adam' , metrics=['accuracy'])\n",
+        "model.summary()\n",
+        " \n",
+        "model.fit(x_train , y_train , epochs = 10 , batch_size = 100)\n",
+        " \n",
+        "score = model.evaluate(x_test,y_test)\n",
+        "print(score)"
+      ],
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "Model: \"sequential_2\"\n",
+            "_________________________________________________________________\n",
+            "Layer (type)                 Output Shape              Param #   \n",
+            "=================================================================\n",
+            "dense_6 (Dense)              (None, 32)                25120     \n",
+            "_________________________________________________________________\n",
+            "dense_7 (Dense)              (None, 64)                2112      \n",
+            "_________________________________________________________________\n",
+            "dense_8 (Dense)              (None, 10)                650       \n",
+            "=================================================================\n",
+            "Total params: 27,882\n",
+            "Trainable params: 27,882\n",
+            "Non-trainable params: 0\n",
+            "_________________________________________________________________\n",
+            "Epoch 1/10\n",
+            "600/600 [==============================] - 2s 2ms/step - loss: 0.7756 - accuracy: 0.7819\n",
+            "Epoch 2/10\n",
+            "600/600 [==============================] - 1s 2ms/step - loss: 0.2045 - accuracy: 0.9418\n",
+            "Epoch 3/10\n",
+            "600/600 [==============================] - 1s 2ms/step - loss: 0.1585 - accuracy: 0.9529\n",
+            "Epoch 4/10\n",
+            "600/600 [==============================] - 1s 2ms/step - loss: 0.1267 - accuracy: 0.9623\n",
+            "Epoch 5/10\n",
+            "600/600 [==============================] - 1s 2ms/step - loss: 0.1093 - accuracy: 0.9665\n",
+            "Epoch 6/10\n",
+            "600/600 [==============================] - 1s 2ms/step - loss: 0.0964 - accuracy: 0.9722\n",
+            "Epoch 7/10\n",
+            "600/600 [==============================] - 1s 2ms/step - loss: 0.0818 - accuracy: 0.9746\n",
+            "Epoch 8/10\n",
+            "600/600 [==============================] - 1s 2ms/step - loss: 0.0820 - accuracy: 0.9745\n",
+            "Epoch 9/10\n",
+            "600/600 [==============================] - 1s 2ms/step - loss: 0.0701 - accuracy: 0.9786\n",
+            "Epoch 10/10\n",
+            "600/600 [==============================] - 1s 2ms/step - loss: 0.0601 - accuracy: 0.9817\n",
+            "313/313 [==============================] - 0s 1ms/step - loss: 0.1037 - accuracy: 0.9684\n",
+            "[0.10373374074697495, 0.9684000015258789]\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    }
+  ]
+}
